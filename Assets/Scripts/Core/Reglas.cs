@@ -10,7 +10,7 @@ public static class Reglas
 
     public const int CalmaFinDelDia = 5;      // ánimo que recupera un grupo bajo 50
     public const int LimiteCalma = 50;
-    public const int ImpuestosFinDelDia = 20;
+    public const int ImpuestosFinDelDia = 25;  // balanceado con Tools/simular_balance.py
     public const float ExigenciaPorSi = 0.2f; // costo en oro × (1 + 0,2 × exigencia)
 
     static readonly float[] tiempoPorDia = { 25f, 20f, 18f, 15f, 12f };

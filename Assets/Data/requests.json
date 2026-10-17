@@ -6,8 +6,18 @@
       "grupo": "campesinos",
       "mensajero": "peasant",
       "texto": "Majestad, la helada arruinó las semillas. Sin ellas no habrá cosecha. ¿Nos dejará morir de hambre?",
-      "si": { "campesinos": 12, "soldados": 0, "iglesia": 0, "oro": -15 },
-      "no": { "campesinos": -10, "soldados": 0, "iglesia": 0, "oro": 0 },
+      "si": {
+        "campesinos": 12,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": -10
+      },
+      "no": {
+        "campesinos": -10,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": 0
+      },
       "trampa": false
     },
     {
@@ -16,9 +26,79 @@
       "grupo": "soldados",
       "mensajero": "soldier",
       "texto": "Mis hombres llevan dos meses sin cobrar. Una moneda por soldado, majestad, y seguirán leales.",
-      "si": { "campesinos": 0, "soldados": 10, "iglesia": 0, "oro": -20 },
-      "no": { "campesinos": 0, "soldados": -10, "iglesia": 0, "oro": 0 },
+      "si": {
+        "campesinos": 0,
+        "soldados": 10,
+        "iglesia": 0,
+        "oro": -15
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": -10,
+        "iglesia": 0,
+        "oro": 0
+      },
       "trampa": false
+    },
+    {
+      "id": "igl_velas",
+      "dia": 1,
+      "grupo": "iglesia",
+      "mensajero": "monk",
+      "texto": "Mil velas de cera para la misa por el alma de su padre. Él lo habría querido así, ¿no cree?",
+      "si": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": 8,
+        "oro": -10
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": -5,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "camp_fiesta",
+      "dia": 1,
+      "grupo": "campesinos",
+      "mensajero": "peasant",
+      "texto": "¡Una fiesta de la cosecha con vino del castillo para todo el pueblo! Su padre lo hacía cada año.",
+      "si": {
+        "campesinos": 10,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": -20
+      },
+      "no": {
+        "campesinos": -6,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "sold_caballos",
+      "dia": 1,
+      "grupo": "soldados",
+      "mensajero": "soldier",
+      "texto": "Necesitamos cincuenta caballos nuevos, majestad. Los viejos ya no aguantan ni un trote.",
+      "si": {
+        "campesinos": 0,
+        "soldados": 8,
+        "iglesia": 0,
+        "oro": -25
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": -6,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": true
     },
     {
       "id": "igl_campanario",
@@ -26,8 +106,118 @@
       "grupo": "iglesia",
       "mensajero": "monk",
       "texto": "Su padre, que en paz descanse, prometió un campanario de oro. Un rey tan sabio como usted no rompería esa promesa.",
-      "si": { "campesinos": 0, "soldados": 0, "iglesia": 15, "oro": -40 },
-      "no": { "campesinos": 0, "soldados": 0, "iglesia": -12, "oro": 0 },
+      "si": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": 15,
+        "oro": -40
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": -8,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "camp_pozo",
+      "dia": 2,
+      "grupo": "campesinos",
+      "mensajero": "peasant",
+      "texto": "El pozo del pueblo se secó. Llevamos el agua en baldes desde el río, a media legua. Solo pedimos cavar uno nuevo.",
+      "si": {
+        "campesinos": 12,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": -10
+      },
+      "no": {
+        "campesinos": -10,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": false
+    },
+    {
+      "id": "sold_espias",
+      "dia": 2,
+      "grupo": "soldados",
+      "mensajero": "soldier",
+      "texto": "Un espía jura que el reino vecino prepara un ataque. ¡Necesitamos 200 lanzas antes de que sea tarde!",
+      "si": {
+        "campesinos": 0,
+        "soldados": 8,
+        "iglesia": 0,
+        "oro": -35
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": -8,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "igl_escuela",
+      "dia": 2,
+      "grupo": "iglesia",
+      "mensajero": "monk",
+      "texto": "Los monjes enseñaríamos a leer a los niños del pueblo. Solo pedimos papel y tinta.",
+      "si": {
+        "campesinos": 5,
+        "soldados": 0,
+        "iglesia": 8,
+        "oro": -5
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": -8,
+        "oro": 0
+      },
+      "trampa": false
+    },
+    {
+      "id": "camp_diezmo",
+      "dia": 2,
+      "grupo": "campesinos",
+      "mensajero": "peasant",
+      "texto": "El diezmo de la iglesia nos deja sin pan. Libérenos de él este año, majestad. El obispo no pasa hambre.",
+      "si": {
+        "campesinos": 12,
+        "soldados": 0,
+        "iglesia": -12,
+        "oro": 0
+      },
+      "no": {
+        "campesinos": -8,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": false
+    },
+    {
+      "id": "sold_proteccion",
+      "dia": 2,
+      "grupo": "soldados",
+      "mensajero": "soldier",
+      "texto": "Déjenos cobrar una moneda por protección a cada aldea. Así no le pedimos oro a usted.",
+      "si": {
+        "campesinos": -15,
+        "soldados": 10,
+        "iglesia": 0,
+        "oro": 10
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": -6,
+        "iglesia": 0,
+        "oro": 0
+      },
       "trampa": true
     },
     {
@@ -36,8 +226,458 @@
       "grupo": "soldados",
       "mensajero": "soldier",
       "texto": "¡Los bárbaros se acercan! Necesitamos 100 espadas nuevas hoy mismo o caeremos.",
-      "si": { "campesinos": -5, "soldados": 10, "iglesia": 0, "oro": -30 },
-      "no": { "campesinos": 0, "soldados": -8, "iglesia": 0, "oro": 0 },
+      "si": {
+        "campesinos": -5,
+        "soldados": 10,
+        "iglesia": 0,
+        "oro": -30
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": -8,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "camp_langostas",
+      "dia": 3,
+      "grupo": "campesinos",
+      "mensajero": "peasant",
+      "texto": "Las langostas se comieron medio campo. Sin ayuda, muchas familias no pasarán el invierno.",
+      "si": {
+        "campesinos": 15,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": -15
+      },
+      "no": {
+        "campesinos": -14,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": false
+    },
+    {
+      "id": "igl_reliquia",
+      "dia": 3,
+      "grupo": "iglesia",
+      "mensajero": "monk",
+      "texto": "Un peregrino trajo el dedo de un santo. Solo pide 50 monedas. ¿Qué precio tiene la salvación?",
+      "si": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": 10,
+        "oro": -45
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": -6,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "sold_muralla",
+      "dia": 3,
+      "grupo": "soldados",
+      "mensajero": "soldier",
+      "texto": "La muralla norte se cae a pedazos. Por ahí entra cualquiera: ladrones, lobos o algo peor.",
+      "si": {
+        "campesinos": 3,
+        "soldados": 10,
+        "iglesia": 0,
+        "oro": -15
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": -10,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": false
+    },
+    {
+      "id": "igl_ayuno",
+      "dia": 3,
+      "grupo": "iglesia",
+      "mensajero": "monk",
+      "texto": "Decrete tres días de ayuno, majestad. El pueblo debe purificarse y un rey piadoso daría el ejemplo.",
+      "si": {
+        "campesinos": -12,
+        "soldados": 0,
+        "iglesia": 12,
+        "oro": 0
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": -5,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "camp_puente",
+      "dia": 3,
+      "grupo": "campesinos",
+      "mensajero": "peasant",
+      "texto": "El río se llevó el puente del mercado. Sin él no podemos vender ni un saco de trigo.",
+      "si": {
+        "campesinos": 10,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": -10
+      },
+      "no": {
+        "campesinos": -10,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": false
+    },
+    {
+      "id": "igl_misa",
+      "dia": 3,
+      "grupo": "iglesia",
+      "mensajero": "monk",
+      "texto": "Bendeciremos su reinado en una misa solemne. Solo cubra el banquete para los nobles y el clero.",
+      "si": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": 10,
+        "oro": -25
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": -6,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "sold_doble_paga",
+      "dia": 4,
+      "grupo": "soldados",
+      "mensajero": "soldier",
+      "texto": "Doble paga, majestad, o mis hombres se irán con el reino vecino. Ellos sí pagan bien.",
+      "si": {
+        "campesinos": 0,
+        "soldados": 12,
+        "iglesia": 0,
+        "oro": -45
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": -12,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "camp_tierras",
+      "dia": 4,
+      "grupo": "campesinos",
+      "mensajero": "peasant",
+      "texto": "Las tierras de caza de su padre están vacías. Déjenos sembrarlas; no le costará ni una moneda.",
+      "si": {
+        "campesinos": 12,
+        "soldados": -5,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "no": {
+        "campesinos": -10,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": false
+    },
+    {
+      "id": "igl_catedral",
+      "dia": 4,
+      "grupo": "iglesia",
+      "mensajero": "monk",
+      "texto": "El reino vecino tiene una catedral más grande que la nuestra. ¿Permitirá esa humillación ante Dios?",
+      "si": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": 18,
+        "oro": -60
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": -8,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "sold_torneo",
+      "dia": 4,
+      "grupo": "soldados",
+      "mensajero": "soldier",
+      "texto": "Un torneo levantaría la moral de la tropa. Y el pueblo amaría ver a su rey en el palco.",
+      "si": {
+        "campesinos": 0,
+        "soldados": 10,
+        "iglesia": 0,
+        "oro": -35
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": -6,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "camp_medico",
+      "dia": 4,
+      "grupo": "campesinos",
+      "mensajero": "peasant",
+      "texto": "La fiebre se extiende por las granjas. Necesitamos un médico de la capital, no más rezos.",
+      "si": {
+        "campesinos": 12,
+        "soldados": 0,
+        "iglesia": -4,
+        "oro": -15
+      },
+      "no": {
+        "campesinos": -14,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": false
+    },
+    {
+      "id": "igl_herejes",
+      "dia": 4,
+      "grupo": "iglesia",
+      "mensajero": "monk",
+      "texto": "Hay herejes predicando en el mercado. Ordene a los soldados encerrarlos, por el bien del reino.",
+      "si": {
+        "campesinos": -10,
+        "soldados": -4,
+        "iglesia": 12,
+        "oro": 0
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": -6,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "sold_reclutas",
+      "dia": 4,
+      "grupo": "soldados",
+      "mensajero": "soldier",
+      "texto": "Nos faltan hombres. Déjenos reclutar a los jóvenes de las granjas, aunque sea en plena cosecha.",
+      "si": {
+        "campesinos": -8,
+        "soldados": 10,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": -8,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": false
+    },
+    {
+      "id": "camp_sin_impuestos",
+      "dia": 4,
+      "grupo": "campesinos",
+      "mensajero": "peasant",
+      "texto": "¡Perdone todos los impuestos de este año, majestad! Tenga corazón con su pueblo.",
+      "si": {
+        "campesinos": 15,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": -50
+      },
+      "no": {
+        "campesinos": -10,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "sold_amenaza",
+      "dia": 5,
+      "grupo": "soldados",
+      "mensajero": "soldier",
+      "texto": "El capitán Bruno manda decir: si no hay oro para armas, no responde por lo que hagan sus hombres.",
+      "si": {
+        "campesinos": 0,
+        "soldados": 12,
+        "iglesia": 0,
+        "oro": -50
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": -14,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "camp_granero",
+      "dia": 5,
+      "grupo": "campesinos",
+      "mensajero": "peasant",
+      "texto": "El granero está vacío. Solo pedimos grano para una semana, hasta que llegue la nueva cosecha.",
+      "si": {
+        "campesinos": 15,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": -15
+      },
+      "no": {
+        "campesinos": -15,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": false
+    },
+    {
+      "id": "igl_canonizar",
+      "dia": 5,
+      "grupo": "iglesia",
+      "mensajero": "monk",
+      "texto": "Canonicemos a su padre, el bondadoso rey Aurelio. Solo hace falta una generosa donación a Roma.",
+      "si": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": 15,
+        "oro": -55
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": -6,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "sold_patrulla",
+      "dia": 5,
+      "grupo": "soldados",
+      "mensajero": "soldier",
+      "texto": "Con una patrulla pequeña en la frontera bastaría para vigilar. No pedimos más.",
+      "si": {
+        "campesinos": 0,
+        "soldados": 10,
+        "iglesia": 0,
+        "oro": -15
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": -10,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": false
+    },
+    {
+      "id": "igl_hospital",
+      "dia": 5,
+      "grupo": "iglesia",
+      "mensajero": "monk",
+      "texto": "Los monjes cuidaríamos a los enfermos si nos presta un ala vacía del castillo.",
+      "si": {
+        "campesinos": 5,
+        "soldados": 0,
+        "iglesia": 10,
+        "oro": -5
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": -8,
+        "oro": 0
+      },
+      "trampa": false
+    },
+    {
+      "id": "camp_armas",
+      "dia": 5,
+      "grupo": "campesinos",
+      "mensajero": "peasant",
+      "texto": "Los jóvenes quieren armas para defender sus granjas. Si los soldados no nos cuidan, lo haremos nosotros.",
+      "si": {
+        "campesinos": 10,
+        "soldados": -12,
+        "iglesia": 0,
+        "oro": -15
+      },
+      "no": {
+        "campesinos": -8,
+        "soldados": 0,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "sold_estatua",
+      "dia": 5,
+      "grupo": "soldados",
+      "mensajero": "soldier",
+      "texto": "Una estatua de bronce del capitán Bruno en la plaza, majestad. Por su valor y su lealtad.",
+      "si": {
+        "campesinos": 0,
+        "soldados": 8,
+        "iglesia": 0,
+        "oro": -40
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": -4,
+        "iglesia": 0,
+        "oro": 0
+      },
+      "trampa": true
+    },
+    {
+      "id": "igl_tesoro",
+      "dia": 5,
+      "grupo": "iglesia",
+      "mensajero": "monk",
+      "texto": "El obispo propone que la iglesia custodie el tesoro real. Dios lo cuidará mejor que cualquier rey.",
+      "si": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": 20,
+        "oro": -80
+      },
+      "no": {
+        "campesinos": 0,
+        "soldados": 0,
+        "iglesia": -8,
+        "oro": 0
+      },
       "trampa": true
     }
   ]
