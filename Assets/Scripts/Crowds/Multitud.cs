@@ -1,22 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-// D1-10. Multitud de un balcón armada con sprites sueltos.
-// Lee Juego.Estado.EstadoVisual(grupo) y cambia cuánta gente hay y cómo se mueve:
-//   4 celebrando  -> gente moderada, animación de festejo, saltitos
-//   3 tranquilos  -> poca gente, animación lenta
-//   2 murmullos   -> gente media, animación normal
-//   1 carteles    -> mucha gente, animación enojada
-//   0 antorchas   -> balcón lleno, gente enojada y agitada, todos al frente
+// D1-10. Multitud de un balcón armada con sprites sueltos, por cantidad:
+//   4 contentos   -> casi nadie en el balcón
+//   3 tranquilos  -> poca gente
+//   2 murmullos   -> gente media
+//   1 carteles    -> mucha gente, más agitada
+//   0 antorchas   -> balcón lleno, todos al frente y saltando
 //
-// Uso:
-// 1. Crear un GameObject vacío dentro del balcón y agregarle este componente.
-// 2. Elegir el grupo y poner la imagen completa de cada animación en "Hoja Tranquilo",
-//    "Hoja Enojado" y "Hoja Festejo". Las listas de cuadros se llenan solas.
-//    Si falta "Festejo" o "Enojado", se usa "Tranquilo".
-// 3. Colocar el objeto donde va el borde inferior izquierdo de la franja de la multitud.
-//    El rectángulo amarillo en la vista Scene muestra el área.
-// Sin juego corriendo se puede probar con "Usar estado de prueba".
+// Funciona de dos formas, y elige sola según dónde esté:
+//   - Dentro de un Canvas (los balcones del Desarrollador 2): crea imágenes de interfaz,
+//     que se ocultan junto con el panel. Va como hijo del panel del balcón, con su
+//     RectTransform cubriendo la franja de la multitud (x 0-320, y 0-90).
+//     Apaga la imagen "Multitud" del panel (la de crowd_[grupo]_[estado].png).
+//   - Fuera de un Canvas (escena de prueba): crea sprites del mundo.
+//
+// Uso: agregar el componente, elegir el grupo y poner la imagen completa del sprite en
+// "Hoja Tranquilo" (los cuadros se cargan solos). Sin GameState funciona "Estado De Prueba".
 public class Multitud : MonoBehaviour
 {
     [Header("Grupo")]
@@ -32,15 +33,19 @@ public class Multitud : MonoBehaviour
     [SerializeField] Sprite[] cuadrosEnojado;
     [SerializeField] Sprite[] cuadrosFestejo;
 
-    [Header("Área de la multitud (en unidades; 16 píxeles = 1 unidad)")]
-    [SerializeField] float ancho = 20f;        // 320 px
-    [SerializeField] float profundidad = 3f;   // filas de atrás hacia adelante
+    [Header("Área de la multitud (en píxeles de arte)")]
+    [SerializeField] float ancho = 320f;
+    [SerializeField] float profundidad = 48f;   // filas de atrás hacia adelante
     [SerializeField] int maximoDePersonas = 30;
 
-    [Header("Cantidad de personas por estado (0 = antorchas ... 4 = celebrando)")]
-    [SerializeField] int[] personasPorEstado = { 30, 20, 12, 6, 10 };
+    [Header("Cantidad de personas por estado (0 = antorchas ... 4 = contentos)")]
+    [SerializeField] int[] personasPorEstado = { 30, 20, 12, 6, 2 };
 
-    [Header("Orden de dibujo")]
+    [Header("Interfaz: imagen de multitud del panel que se debe apagar")]
+    [Tooltip("Si se deja vacío, busca en el panel un hermano llamado 'Multitud' con Image.")]
+    [SerializeField] Graphic imagenAOcultar;
+
+    [Header("Escena de prueba (sprites del mundo)")]
     [SerializeField] string sortingLayer = "Default";
     [SerializeField] int ordenBase = 10;
 
@@ -48,25 +53,33 @@ public class Multitud : MonoBehaviour
     [SerializeField] bool usarEstadoDePrueba;
     [SerializeField, Range(0, 4)] int estadoDePrueba = 2;
 
-    // Velocidad de animación (cuadros por segundo) y salto por estado.
-    static readonly float[] fpsPorEstado = { 14f, 10f, 7f, 4f, 9f };
-    static readonly float[] saltoPorEstado = { 0.18f, 0.06f, 0f, 0f, 0.12f };
+    const float PixelesPorUnidad = 16f;
+
+    // Velocidad de animación (cuadros por segundo) y salto en píxeles por estado.
+    static readonly float[] fpsPorEstado = { 14f, 10f, 7f, 5f, 4f };
+    static readonly float[] saltoPorEstado = { 3f, 1f, 0f, 0f, 0f };
 
     class Persona
     {
-        public SpriteRenderer render;
-        public Vector3 posicionBase;
+        public GameObject objeto;
+        public SpriteRenderer render;     // modo mundo
+        public Image imagen;              // modo interfaz
+        public RectTransform rect;
+        public Vector2 posicionBase;      // en píxeles de arte
         public float desfase;
         public float velocidad;
     }
 
     readonly List<Persona> personas = new List<Persona>();
+    bool modoInterfaz;
     int estadoActual = -1;
     bool suscrito;
     bool avisoSinCuadros;
 
     void Awake()
     {
+        modoInterfaz = GetComponentInParent<Canvas>(true) != null;
+        if (modoInterfaz && imagenAOcultar == null) BuscarImagenDelPanel();
         CrearPersonas();
     }
 
@@ -78,13 +91,19 @@ public class Multitud : MonoBehaviour
 
     void OnEnable()
     {
-        // Los balcones se activan y desactivan al navegar: al volver, mostrar el estado actual.
-        if (personas.Count > 0) Refrescar();
+        if (personas.Count > 0) { estadoActual = -1; Refrescar(); }
     }
 
     void OnDestroy()
     {
         if (suscrito && Juego.Estado != null) Juego.Estado.EstadoCambio -= Refrescar;
+    }
+
+    void BuscarImagenDelPanel()
+    {
+        if (transform.parent == null) return;
+        Transform hermano = transform.parent.Find("Multitud");
+        if (hermano != null && hermano != transform) imagenAOcultar = hermano.GetComponent<Graphic>();
     }
 
     void Suscribir()
@@ -94,36 +113,59 @@ public class Multitud : MonoBehaviour
         suscrito = true;
     }
 
-    int LeerEstado()
-    {
-        if (usarEstadoDePrueba || Juego.Estado == null) return estadoDePrueba;
-        return Juego.Estado.EstadoVisual(grupo);
-    }
+    bool ModoPrueba => usarEstadoDePrueba || Juego.Estado == null;
+
+    int LeerEstado() => ModoPrueba ? estadoDePrueba : Juego.Estado.EstadoVisual(grupo);
 
     // Crea todas las personas una sola vez y luego solo se muestran u ocultan.
-    // Las posiciones usan una semilla fija por grupo: la multitud no "salta" de lugar.
+    // Posiciones con semilla fija por grupo: la multitud no "salta" de lugar.
     void CrearPersonas()
     {
         var azar = new System.Random(1000 + (int)grupo);
         for (int i = 0; i < maximoDePersonas; i++)
         {
-            var objeto = new GameObject($"Persona_{i:00}");
-            objeto.transform.SetParent(transform, false);
-
-            var render = objeto.AddComponent<SpriteRenderer>();
-            render.sortingLayerName = sortingLayer;
-            render.flipX = azar.NextDouble() < 0.5;
-            float brillo = 0.85f + 0.15f * (float)azar.NextDouble();
-            render.color = new Color(brillo, brillo, brillo, 1f);
-
-            personas.Add(new Persona
+            var p = new Persona
             {
-                render = render,
-                posicionBase = new Vector3((float)azar.NextDouble() * ancho, (float)azar.NextDouble() * profundidad, 0f),
+                posicionBase = new Vector2((float)azar.NextDouble() * ancho, (float)azar.NextDouble() * profundidad),
                 desfase = (float)azar.NextDouble() * 10f,
                 velocidad = 0.85f + 0.3f * (float)azar.NextDouble(),
-            });
-            objeto.SetActive(false);
+            };
+            bool espejo = azar.NextDouble() < 0.5;
+            float brillo = 0.85f + 0.15f * (float)azar.NextDouble();
+            var color = new Color(brillo, brillo, brillo, 1f);
+
+            if (modoInterfaz)
+            {
+                p.objeto = new GameObject($"Persona_{i:00}", typeof(RectTransform), typeof(Image));
+                p.objeto.transform.SetParent(transform, false);
+                p.rect = (RectTransform)p.objeto.transform;
+                p.rect.anchorMin = p.rect.anchorMax = Vector2.zero;   // abajo a la izquierda
+                p.rect.pivot = new Vector2(0.5f, 0f);                  // pies en el suelo
+                p.rect.localScale = new Vector3(espejo ? -1f : 1f, 1f, 1f);
+                p.imagen = p.objeto.GetComponent<Image>();
+                p.imagen.raycastTarget = false;
+                p.imagen.color = color;
+            }
+            else
+            {
+                p.objeto = new GameObject($"Persona_{i:00}");
+                p.objeto.transform.SetParent(transform, false);
+                p.render = p.objeto.AddComponent<SpriteRenderer>();
+                p.render.sortingLayerName = sortingLayer;
+                p.render.flipX = espejo;
+                p.render.color = color;
+            }
+
+            p.objeto.SetActive(false);
+            personas.Add(p);
+        }
+
+        // En interfaz el orden de dibujo es el orden de los hijos: primero los de atrás.
+        if (modoInterfaz)
+        {
+            var porFila = new List<Persona>(personas);
+            porFila.Sort((a, b) => b.posicionBase.y.CompareTo(a.posicionBase.y));
+            for (int i = 0; i < porFila.Count; i++) porFila[i].objeto.transform.SetSiblingIndex(i);
         }
     }
 
@@ -136,9 +178,9 @@ public class Multitud : MonoBehaviour
 
         int visibles = Mathf.Min(personas.Count, personasPorEstado[Mathf.Clamp(estado, 0, personasPorEstado.Length - 1)]);
         for (int i = 0; i < personas.Count; i++)
-            personas[i].render.gameObject.SetActive(i < visibles);
+            personas[i].objeto.SetActive(i < visibles);
 
-        Debug.Log($"[Multitud] {name}: estado {estado}, {visibles} personas", this);
+        if (ModoPrueba) Debug.Log($"[Multitud] {name}: estado {estado}, {visibles} personas", this);
     }
 
     Sprite[] CuadrosDelEstado(int estado)
@@ -148,7 +190,6 @@ public class Multitud : MonoBehaviour
         return Limpiar(cuadrosTranquilo);
     }
 
-    // Quita las casillas vacías (None) de una lista de cuadros.
     static Sprite[] Limpiar(Sprite[] cuadros)
     {
         if (cuadros == null) return new Sprite[0];
@@ -157,9 +198,16 @@ public class Multitud : MonoBehaviour
 
     void Update()
     {
-        // Sin GameState en la escena, el control "Estado De Prueba" funciona aunque la casilla esté desmarcada.
-        bool modoPrueba = usarEstadoDePrueba || Juego.Estado == null;
-        if (modoPrueba && estadoDePrueba != estadoActual) Refrescar();
+        bool prueba = ModoPrueba;
+        if (prueba && estadoDePrueba != estadoActual) Refrescar();
+
+        // El GameState arranca apagado y se enciende al pulsar Jugar.
+        if (!prueba && !suscrito)
+        {
+            Suscribir();
+            estadoActual = -1;
+            Refrescar();
+        }
         if (estadoActual < 0) return;
 
         Sprite[] cuadros = CuadrosDelEstado(estadoActual);
@@ -167,8 +215,7 @@ public class Multitud : MonoBehaviour
         {
             if (!avisoSinCuadros)
             {
-                Debug.LogWarning($"[Multitud] {name}: la lista 'Cuadros Tranquilo' está vacía o solo tiene casillas en None. " +
-                                 "Arrastra los cuadros cortados del sprite a esa lista (con el juego detenido).", this);
+                Debug.LogWarning($"[Multitud] {name}: no hay cuadros. Pon la imagen del sprite en 'Hoja Tranquilo' (con el juego detenido).", this);
                 avisoSinCuadros = true;
             }
             return;
@@ -180,33 +227,39 @@ public class Multitud : MonoBehaviour
 
         foreach (Persona p in personas)
         {
-            if (!p.render.gameObject.activeSelf) continue;
+            if (!p.objeto.activeSelf) continue;
 
             float t = Time.time * p.velocidad + p.desfase;
-            int cuadro = Mathf.FloorToInt(t * fps) % cuadros.Length;
-            p.render.sprite = cuadros[cuadro];
+            Sprite cuadro = cuadros[Mathf.FloorToInt(t * fps) % cuadros.Length];
 
-            Vector3 pos = p.posicionBase;
+            Vector2 pos = p.posicionBase;
             if (alFrente) pos.y *= 0.4f;                       // en antorchas todos se apiñan al frente
-            pos.y += Mathf.Abs(Mathf.Sin(t * 6f)) * salto;     // saltitos de enojo o de festejo
-            p.render.transform.localPosition = SnapAPixel(pos);
+            pos.y += Mathf.Abs(Mathf.Sin(t * 6f)) * salto;     // saltitos de enojo
+            pos = new Vector2(Mathf.Round(pos.x), Mathf.Round(pos.y));   // pixel art nítido
 
-            // Los de adelante (y más baja) se dibujan encima de los de atrás.
-            p.render.sortingOrder = ordenBase + Mathf.RoundToInt((profundidad - p.posicionBase.y) * 100f);
+            if (modoInterfaz)
+            {
+                p.imagen.sprite = cuadro;
+                p.rect.sizeDelta = cuadro.rect.size;           // 1 unidad del Canvas = 1 píxel de arte
+                p.rect.anchoredPosition = pos;
+            }
+            else
+            {
+                p.render.sprite = cuadro;
+                p.objeto.transform.localPosition = pos / PixelesPorUnidad;
+                p.render.sortingOrder = ordenBase + Mathf.RoundToInt(profundidad - p.posicionBase.y);
+            }
         }
     }
 
-    // Mantiene el pixel art nítido: posiciones en múltiplos exactos de 1 píxel.
-    static Vector3 SnapAPixel(Vector3 v)
+    void LateUpdate()
     {
-        const float pixel = 1f / 16f;
-        return new Vector3(Mathf.Round(v.x / pixel) * pixel, Mathf.Round(v.y / pixel) * pixel, 0f);
+        // El panel del balcón vuelve a encender su imagen de multitud al refrescar: mantenerla apagada.
+        if (imagenAOcultar != null && imagenAOcultar.enabled) imagenAOcultar.enabled = false;
     }
 
 #if UNITY_EDITOR
-    // Cada vez que se cambia algo en el Inspector, llena las listas de cuadros
-    // a partir de las imágenes completas. Solo corre en el editor; en el juego
-    // las listas ya quedan guardadas.
+    // Llena las listas de cuadros a partir de las imágenes completas (solo en el editor).
     void OnValidate()
     {
         LlenarDesdeHoja(hojaTranquilo, ref cuadrosTranquilo, "Tranquilo");
@@ -244,8 +297,7 @@ public class Multitud : MonoBehaviour
             return;
         }
 
-        // Tira horizontal: de izquierda a derecha.
-        cuadros.Sort((a, b) => a.rect.x.CompareTo(b.rect.x));
+        cuadros.Sort((a, b) => a.rect.x.CompareTo(b.rect.x));   // tira horizontal: de izquierda a derecha
 
         if (destino != null && destino.Length == cuadros.Count)
         {
@@ -262,8 +314,9 @@ public class Multitud : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        if (GetComponentInParent<Canvas>() != null) return;   // en interfaz el área es el RectTransform
         Gizmos.color = Color.yellow;
-        Vector3 centro = transform.position + new Vector3(ancho / 2f, profundidad / 2f, 0f);
-        Gizmos.DrawWireCube(centro, new Vector3(ancho, profundidad, 0f));
+        Vector3 tam = new Vector3(ancho, profundidad, 0f) / PixelesPorUnidad;
+        Gizmos.DrawWireCube(transform.position + tam / 2f, tam);
     }
 }
