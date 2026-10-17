@@ -1,0 +1,44 @@
+{
+  "peticiones": [
+    {
+      "id": "camp_semillas",
+      "dia": 1,
+      "grupo": "campesinos",
+      "mensajero": "peasant",
+      "texto": "Majestad, la helada arruinó las semillas. Sin ellas no habrá cosecha. ¿Nos dejará morir de hambre?",
+      "si": { "campesinos": 12, "soldados": 0, "iglesia": 0, "oro": -15 },
+      "no": { "campesinos": -10, "soldados": 0, "iglesia": 0, "oro": 0 },
+      "trampa": false
+    },
+    {
+      "id": "sold_paga",
+      "dia": 1,
+      "grupo": "soldados",
+      "mensajero": "soldier",
+      "texto": "Mis hombres llevan dos meses sin cobrar. Una moneda por soldado, majestad, y seguirán leales.",
+      "si": { "campesinos": 0, "soldados": 10, "iglesia": 0, "oro": -20 },
+      "no": { "campesinos": 0, "soldados": -10, "iglesia": 0, "oro": 0 },
+      "trampa": false
+    },
+    {
+      "id": "igl_campanario",
+      "dia": 2,
+      "grupo": "iglesia",
+      "mensajero": "monk",
+      "texto": "Su padre, que en paz descanse, prometió un campanario de oro. Un rey tan sabio como usted no rompería esa promesa.",
+      "si": { "campesinos": 0, "soldados": 0, "iglesia": 15, "oro": -40 },
+      "no": { "campesinos": 0, "soldados": 0, "iglesia": -12, "oro": 0 },
+      "trampa": true
+    },
+    {
+      "id": "sold_barbaros",
+      "dia": 3,
+      "grupo": "soldados",
+      "mensajero": "soldier",
+      "texto": "¡Los bárbaros se acercan! Necesitamos 100 espadas nuevas hoy mismo o caeremos.",
+      "si": { "campesinos": -5, "soldados": 10, "iglesia": 0, "oro": -30 },
+      "no": { "campesinos": 0, "soldados": -8, "iglesia": 0, "oro": 0 },
+      "trampa": true
+    }
+  ]
+}
