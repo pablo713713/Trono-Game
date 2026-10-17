@@ -17,6 +17,7 @@ public interface IGameState
     Peticion PeticionActual { get; }    // id "duque" = escena final
     float TiempoRestante { get; }       // segundos
     float TiempoTotal { get; }
+    ResumenDia ResumenTotal { get; }    // totales de toda la partida, para la pantalla final
 
     event Action<Peticion> PeticionNueva;
     event Action<bool> PeticionResuelta;   // true = sí

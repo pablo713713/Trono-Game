@@ -35,7 +35,10 @@ public class GameStateFalso : MonoBehaviour, IGameState
     bool terminado;
     int siguienteFinal;
     ResumenDia resumen = new ResumenDia();
+    readonly ResumenDia total = new ResumenDia();
     int indicePrueba;
+
+    public ResumenDia ResumenTotal { get { total.dia = dia; return total; } }
 
     public int Dia => dia;
     public int Oro => oro;
@@ -159,9 +162,9 @@ public class GameStateFalso : MonoBehaviour, IGameState
             return;
         }
 
-        if (porReloj) resumen.porReloj++;
-        else if (si) resumen.sies++;
-        else resumen.noes++;
+        if (porReloj) { resumen.porReloj++; total.porReloj++; }
+        else if (si) { resumen.sies++; total.sies++; }
+        else { resumen.noes++; total.noes++; }
 
         Efectos efectos = si ? peticion.si : peticion.no;
         CambiarAnimo(Grupo.Campesinos, efectos.campesinos);
