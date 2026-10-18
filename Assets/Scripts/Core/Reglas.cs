@@ -11,6 +11,10 @@ public static class Reglas
     public const int OroInicial = 100;   // se mantiene fijo; queda solo por compatibilidad con la interfaz
     public const int Dias = 5;
 
+    // Con el ánimo en este valor o menos (80 % de enojo o más) el balcón muestra su fondo de rebelión.
+    // Con 0 (100 % de enojo) el grupo invade el castillo y la partida termina.
+    public const int UmbralRebelion = 20;
+
     static readonly float[] tiempoPorDia = { 25f, 20f, 18f, 15f, 12f };
     static readonly int[] mensajerosPorDia = { 4, 6, 8, 10, 12 };   // 40 de un banco de 50 peticiones
 

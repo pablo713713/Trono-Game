@@ -391,6 +391,7 @@ GameObject:
   - component: {fileID: 4127565065179350303}
   - component: {fileID: 3499489635372640936}
   - component: {fileID: 4236022655841804626}
+  - component: {fileID: 3147376453683381285}
   m_Layer: 0
   m_Name: Panel_Balcon_Catedral
   m_TagString: Untagged
@@ -450,6 +451,22 @@ MonoBehaviour:
   multitud: {fileID: 8042175819810000654}
   titulo: {fileID: 6507802179015283261}
   segundosPorCuadro: 0.6
+--- !u!114 &3147376453683381285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6266736507584449678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c657cb41d76753409440cc6ade86317, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FondoRebelion
+  grupo: 2
+  fondoNormal: bg_balcony_church
+  fondoRebelion: bg_balcony_church_riot
+  fondo: {fileID: 7514204510573096088}
 --- !u!1 &6695305415517950731
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,6 +528,12 @@ MonoBehaviour:
   - {fileID: -7831653511733468448, guid: 283a42362df6f68449f9db2f1a0e429c, type: 3}
   cuadrosEnojado: []
   cuadrosFestejo: []
+  hojaTipo2: {fileID: 2800000, guid: 4d3b128117083d24db16b7b6304f2a88, type: 3}
+  cuadrosTipo2:
+  - {fileID: -3629387922026960038, guid: 4d3b128117083d24db16b7b6304f2a88, type: 3}
+  - {fileID: 4596375420986054105, guid: 4d3b128117083d24db16b7b6304f2a88, type: 3}
+  - {fileID: -4882180596051347896, guid: 4d3b128117083d24db16b7b6304f2a88, type: 3}
+  - {fileID: 8635607723353360089, guid: 4d3b128117083d24db16b7b6304f2a88, type: 3}
   ancho: 320
   profundidad: 48
   maximoDePersonas: 30

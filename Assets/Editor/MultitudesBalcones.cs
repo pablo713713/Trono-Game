@@ -17,6 +17,7 @@ public static class MultitudesBalcones
         public string prefab;
         public Grupo grupo;
         public string sprite;
+        public string sprite2;   // segundo tipo de poblador (mitad de la multitud); opcional
         // Área de la multitud en píxeles de arte (320 x 180, origen abajo a la izquierda).
         // y = donde pisan los de adelante; profundidad = hasta dónde llegan los de atrás.
         public float x, y, ancho, alto, profundidad;
@@ -24,9 +25,9 @@ public static class MultitudesBalcones
 
     static readonly Balcon[] balcones =
     {
-        new Balcon { prefab = "Panel_Balcon_Catedral", grupo = Grupo.Iglesia, sprite = "fiel_iglesia", x = 0, y = 0, ancho = 320, alto = 90, profundidad = 48 },
-        new Balcon { prefab = "Panel_Balcon_Cultivos", grupo = Grupo.Campesinos, sprite = "campesino", x = 0, y = 0, ancho = 320, alto = 90, profundidad = 48 },
-        new Balcon { prefab = "Panel_Balcon_Armeria", grupo = Grupo.Soldados, sprite = "soldado", x = 36, y = 70, ancho = 248, alto = 80, profundidad = 44 },   // sobre el pasto, entre las columnas
+        new Balcon { prefab = "Panel_Balcon_Catedral", grupo = Grupo.Iglesia, sprite = "fiel_iglesia", sprite2 = "fiel_iglesia2", x = 0, y = 0, ancho = 320, alto = 90, profundidad = 48 },
+        new Balcon { prefab = "Panel_Balcon_Cultivos", grupo = Grupo.Campesinos, sprite = "campesino", sprite2 = "campesino2", x = 0, y = 0, ancho = 320, alto = 90, profundidad = 48 },
+        new Balcon { prefab = "Panel_Balcon_Armeria", grupo = Grupo.Soldados, sprite = "soldado", sprite2 = "soldado2", x = 36, y = 70, ancho = 248, alto = 80, profundidad = 44 },   // sobre el pasto, entre las columnas
     };
 
     [MenuItem("Trono/Dev1/Poner multitudes en los balcones")]
@@ -95,6 +96,21 @@ public static class MultitudesBalcones
                 for (int i = 0; i < cuadros.Length; i++)
                     lista.GetArrayElementAtIndex(i).objectReferenceValue = cuadros[i];
 
+                // Segundo tipo de poblador: si su imagen existe, la mitad de la multitud lo usa.
+                string nota2 = "";
+                string ruta2 = "Assets/Art/Crowds/" + b.sprite2 + ".png";
+                var hoja2 = string.IsNullOrEmpty(b.sprite2) ? null : AssetDatabase.LoadAssetAtPath<Texture2D>(ruta2);
+                SerializedProperty lista2 = so.FindProperty("cuadrosTipo2");
+                Sprite[] cuadros2 = hoja2 != null ? Cuadros(ruta2, out string problema2) : null;
+                so.FindProperty("hojaTipo2").objectReferenceValue = cuadros2 != null ? hoja2 : null;
+                lista2.arraySize = cuadros2 != null ? cuadros2.Length : 0;
+                if (cuadros2 != null)
+                {
+                    for (int i = 0; i < cuadros2.Length; i++) lista2.GetArrayElementAtIndex(i).objectReferenceValue = cuadros2[i];
+                    nota2 = " + " + cuadros2.Length + " de " + b.sprite2;
+                }
+                else if (!string.IsNullOrEmpty(b.sprite2)) nota2 = " (sin " + b.sprite2 + ": un solo tipo)";
+
                 if (imagenPanel != null)
                     so.FindProperty("imagenAOcultar").objectReferenceValue = imagenPanel.GetComponent<UnityEngine.UI.Graphic>();
 
@@ -105,8 +121,17 @@ public static class MultitudesBalcones
                 var textoTitulo = titulo != null ? titulo.GetComponent<UnityEngine.UI.Text>() : null;
                 if (textoTitulo != null) textoTitulo.text = Textos.TituloBalcon(b.grupo);
 
+                // Fondo de rebelión: con 80 % de enojo o más cambia a [fondo]_riot.
+                FondoRebelion fr = raiz.GetComponent<FondoRebelion>();
+                if (fr == null) fr = raiz.AddComponent<FondoRebelion>();
+                fr.grupo = b.grupo;
+                fr.fondoNormal = Textos.FondoBalcon(b.grupo);
+                fr.fondoRebelion = fr.fondoNormal + "_riot";
+                Transform fondo = raiz.transform.Find("Fondo");
+                fr.fondo = fondo != null ? fondo.GetComponent<UnityEngine.UI.Image>() : null;
+
                 PrefabUtility.SaveAsPrefabAsset(raiz, rutaPrefab);
-                hechos.Add(b.prefab + " (" + cuadros.Length + " cuadros de " + b.sprite + ")");
+                hechos.Add(b.prefab + " (" + cuadros.Length + " cuadros de " + b.sprite + nota2 + ")");
             }
             finally
             {

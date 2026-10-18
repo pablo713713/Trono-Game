@@ -194,6 +194,7 @@ GameObject:
   - component: {fileID: 4163373110247584061}
   - component: {fileID: 8143648873059768532}
   - component: {fileID: 5572683196574958809}
+  - component: {fileID: 60946400591286509}
   m_Layer: 0
   m_Name: Panel_Balcon_Cultivos
   m_TagString: Untagged
@@ -253,6 +254,22 @@ MonoBehaviour:
   multitud: {fileID: 531245740174720344}
   titulo: {fileID: 4395553604765872909}
   segundosPorCuadro: 0.6
+--- !u!114 &60946400591286509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4105548364184161464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c657cb41d76753409440cc6ade86317, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FondoRebelion
+  grupo: 0
+  fondoNormal: bg_balcony_farm
+  fondoRebelion: bg_balcony_farm_riot
+  fondo: {fileID: 5570824636133589022}
 --- !u!1 &4190167099077744690
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,6 +586,12 @@ MonoBehaviour:
   - {fileID: 5467348982032180308, guid: 01e599e46e9cbd74ea3842356f77c25a, type: 3}
   cuadrosEnojado: []
   cuadrosFestejo: []
+  hojaTipo2: {fileID: 2800000, guid: c0b7be1e1cb65e3459d0bca4cf0113f3, type: 3}
+  cuadrosTipo2:
+  - {fileID: -951533857022581287, guid: c0b7be1e1cb65e3459d0bca4cf0113f3, type: 3}
+  - {fileID: -8318037007288609127, guid: c0b7be1e1cb65e3459d0bca4cf0113f3, type: 3}
+  - {fileID: 2718825581453774827, guid: c0b7be1e1cb65e3459d0bca4cf0113f3, type: 3}
+  - {fileID: -3458393840473577834, guid: c0b7be1e1cb65e3459d0bca4cf0113f3, type: 3}
   ancho: 320
   profundidad: 48
   maximoDePersonas: 30

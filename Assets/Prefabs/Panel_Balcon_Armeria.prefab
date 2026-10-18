@@ -283,6 +283,7 @@ GameObject:
   - component: {fileID: 1734698159241964974}
   - component: {fileID: 7794922308643769435}
   - component: {fileID: 6192838156445773619}
+  - component: {fileID: 7993942734773330816}
   m_Layer: 0
   m_Name: Panel_Balcon_Armeria
   m_TagString: Untagged
@@ -342,6 +343,22 @@ MonoBehaviour:
   multitud: {fileID: 9021179169486823710}
   titulo: {fileID: 4240062952177776337}
   segundosPorCuadro: 0.6
+--- !u!114 &7993942734773330816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4184970918749220932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c657cb41d76753409440cc6ade86317, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FondoRebelion
+  grupo: 1
+  fondoNormal: bg_balcony_armory
+  fondoRebelion: bg_balcony_armory_riot
+  fondo: {fileID: 5762473766218333092}
 --- !u!1 &4330620346937846905
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,6 +567,12 @@ MonoBehaviour:
   - {fileID: 3676457998561298202, guid: 6b9137bea9b52d441bed763b7940eaea, type: 3}
   cuadrosEnojado: []
   cuadrosFestejo: []
+  hojaTipo2: {fileID: 2800000, guid: 54c5a6483552bbb46a00bda68b38acf9, type: 3}
+  cuadrosTipo2:
+  - {fileID: 6190830851622372376, guid: 54c5a6483552bbb46a00bda68b38acf9, type: 3}
+  - {fileID: -5145425087963770538, guid: 54c5a6483552bbb46a00bda68b38acf9, type: 3}
+  - {fileID: -4638975950698831386, guid: 54c5a6483552bbb46a00bda68b38acf9, type: 3}
+  - {fileID: 4409404690117758248, guid: 54c5a6483552bbb46a00bda68b38acf9, type: 3}
   ancho: 248
   profundidad: 44
   maximoDePersonas: 30
