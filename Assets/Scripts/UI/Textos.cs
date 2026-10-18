@@ -20,7 +20,7 @@ public static class Textos
     {
         switch (g)
         {
-            case Grupo.Campesinos: return "CULTIVOS - Marta, la cosechera";
+            case Grupo.Campesinos: return "MERCADO - Marta, la cosechera";
             case Grupo.Soldados: return "ARMERÍA - Capitán Bruno";
             default: return "CATEDRAL - Obispo Anselmo";
         }
@@ -28,7 +28,7 @@ public static class Textos
 
     public static string NombreGrupo(Grupo g)
     {
-        switch (g) { case Grupo.Campesinos: return "Los campesinos"; case Grupo.Soldados: return "Los soldados"; default: return "La iglesia"; }
+        switch (g) { case Grupo.Campesinos: return "El mercado"; case Grupo.Soldados: return "Los soldados"; default: return "La iglesia"; }
     }
 
     // ---- Inés, según NivelOro (0 = casi vacía ... 4 = llena) ----
@@ -67,9 +67,9 @@ public static class Textos
         victoria = f == Final.Victoria;
         switch (f)
         {
-            case Final.RebelionCampesina: titulo = "Rebelión campesina"; mensaje = "Ignoraste a quien te alimenta."; break;
-            case Final.GolpeMilitar: titulo = "Golpe militar"; mensaje = "Ignoraste a quien te protege."; break;
-            case Final.Excomunion: titulo = "Excomunión"; mensaje = "Ignoraste la fe de tu pueblo."; break;
+            case Final.RebelionCampesina: titulo = "Rebelión del mercado"; mensaje = "El mercado subió por las gradas y tomó el castillo. Ignoraste a quien te alimenta."; break;
+            case Final.GolpeMilitar: titulo = "Golpe militar"; mensaje = "Los soldados entraron por la armería. Ignoraste a quien te protege."; break;
+            case Final.Excomunion: titulo = "Levantamiento de la iglesia"; mensaje = "Los fieles cruzaron la puerta de la catedral. Ignoraste la fe de tu pueblo."; break;
             case Final.Bancarrota: titulo = "Bancarrota"; mensaje = "Dijiste que sí demasiadas veces."; break;
             case Final.CedioLaCorona: titulo = "El rey que no supo decir que no"; mensaje = "Sobreviviste, pero cediste lo único que importaba."; break;
             default: titulo = "Victoria"; mensaje = "Aprendiste a decir que no."; break;

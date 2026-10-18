@@ -20,8 +20,7 @@ public class PantallaFinDia : MonoBehaviour
         resumen.text =
             Textos.Tendencia(Grupo.Campesinos, r.cambioCampesinos) + "\n" +
             Textos.Tendencia(Grupo.Soldados, r.cambioSoldados) + "\n" +
-            Textos.Tendencia(Grupo.Iglesia, r.cambioIglesia) + "\n" +
-            Textos.TendenciaOro(r.cambioOro);
+            Textos.Tendencia(Grupo.Iglesia, r.cambioIglesia);   // versión 2: el oro ya no cambia
         comentarioTobias.text = "Tobías: \"" +
             (string.IsNullOrEmpty(r.comentarioTobias) ? Textos.ComentarioTobiasPorDefecto : r.comentarioTobias) + "\"";
     }
