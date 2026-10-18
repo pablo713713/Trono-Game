@@ -33,6 +33,11 @@ public class Multitud : MonoBehaviour
     [SerializeField] Sprite[] cuadrosEnojado;
     [SerializeField] Sprite[] cuadrosFestejo;
 
+    [Header("Segundo tipo de poblador (mitad de la multitud)")]
+    [Tooltip("Imagen completa de la animación del segundo tipo. Si se deja vacía, todos usan el primero.")]
+    [SerializeField] Texture2D hojaTipo2;
+    [SerializeField] Sprite[] cuadrosTipo2;
+
     [Header("Área de la multitud (en píxeles de arte)")]
     [SerializeField] float ancho = 320f;
     [SerializeField] float profundidad = 48f;   // filas de atrás hacia adelante
@@ -68,6 +73,7 @@ public class Multitud : MonoBehaviour
         public Vector2 posicionBase;      // en píxeles de arte
         public float desfase;
         public float velocidad;
+        public int tipo;                  // 0 = primer poblador, 1 = segundo (se alternan: mitad y mitad)
     }
 
     readonly List<Persona> personas = new List<Persona>();
@@ -129,6 +135,7 @@ public class Multitud : MonoBehaviour
                 posicionBase = new Vector2((float)azar.NextDouble() * ancho, (float)azar.NextDouble() * profundidad),
                 desfase = (float)azar.NextDouble() * 10f,
                 velocidad = 0.85f + 0.3f * (float)azar.NextDouble(),
+                tipo = i % 2,
             };
             bool espejo = azar.NextDouble() < 0.5;
             float brillo = 0.85f + 0.15f * (float)azar.NextDouble();
@@ -211,6 +218,7 @@ public class Multitud : MonoBehaviour
         if (estadoActual < 0) return;
 
         Sprite[] cuadros = CuadrosDelEstado(estadoActual);
+        Sprite[] tipo2 = Limpiar(cuadrosTipo2);
         if (cuadros.Length == 0)
         {
             if (!avisoSinCuadros)
@@ -230,7 +238,8 @@ public class Multitud : MonoBehaviour
             if (!p.objeto.activeSelf) continue;
 
             float t = Time.time * p.velocidad + p.desfase;
-            Sprite cuadro = cuadros[Mathf.FloorToInt(t * fps) % cuadros.Length];
+            Sprite[] suyos = (p.tipo == 1 && tipo2.Length > 0) ? tipo2 : cuadros;
+            Sprite cuadro = suyos[Mathf.FloorToInt(t * fps) % suyos.Length];
 
             Vector2 pos = p.posicionBase;
             if (alFrente) pos.y *= 0.4f;                       // en antorchas todos se apiñan al frente
@@ -265,6 +274,7 @@ public class Multitud : MonoBehaviour
         LlenarDesdeHoja(hojaTranquilo, ref cuadrosTranquilo, "Tranquilo");
         LlenarDesdeHoja(hojaEnojado, ref cuadrosEnojado, "Enojado");
         LlenarDesdeHoja(hojaFestejo, ref cuadrosFestejo, "Festejo");
+        LlenarDesdeHoja(hojaTipo2, ref cuadrosTipo2, "Tipo 2");
     }
 
     void LlenarDesdeHoja(Texture2D hoja, ref Sprite[] destino, string nombre)

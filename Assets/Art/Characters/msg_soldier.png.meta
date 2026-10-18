@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 03f6615e42356424fb7ae3e98f6d41f1
+guid: f6c9bb40cc3d8e7458e9826e5fb193a6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7343068655843421290
-    second: msg_soldier_0
+      213: -8997332418181968834
+    second: msg_monk_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: msg_soldier_0
+      name: msg_monk_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a6c2ad88902d7e560800000000000000
-      internalID: 7343068655843421290
+      spriteID: e3c4828e5dd032380800000000000000
+      internalID: -8997332418181968834
       vertices: []
       indices: 
       edges: []

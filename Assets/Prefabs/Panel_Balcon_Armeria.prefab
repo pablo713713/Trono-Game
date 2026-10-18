@@ -567,6 +567,12 @@ MonoBehaviour:
   - {fileID: 3676457998561298202, guid: 6b9137bea9b52d441bed763b7940eaea, type: 3}
   cuadrosEnojado: []
   cuadrosFestejo: []
+  hojaTipo2: {fileID: 2800000, guid: 54c5a6483552bbb46a00bda68b38acf9, type: 3}
+  cuadrosTipo2:
+  - {fileID: 6190830851622372376, guid: 54c5a6483552bbb46a00bda68b38acf9, type: 3}
+  - {fileID: -5145425087963770538, guid: 54c5a6483552bbb46a00bda68b38acf9, type: 3}
+  - {fileID: -4638975950698831386, guid: 54c5a6483552bbb46a00bda68b38acf9, type: 3}
+  - {fileID: 4409404690117758248, guid: 54c5a6483552bbb46a00bda68b38acf9, type: 3}
   ancho: 248
   profundidad: 44
   maximoDePersonas: 30
