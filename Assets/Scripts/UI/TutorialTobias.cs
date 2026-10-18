@@ -25,7 +25,7 @@ public class TutorialTobias : MonoBehaviour
         if (!balcones && (vista == Vista.Cultivos || vista == Vista.Armeria || vista == Vista.Catedral))
         {
             balcones = true;
-            dialogo.Encolar("Desde los balcones ve cómo reacciona el pueblo. Teclas 1 a 3; Espacio para volver al trono.", 7f);
+            dialogo.Encolar("Desde los balcones ve cómo reacciona el pueblo: entre más gente, más enojados. Espacio para volver al trono.", 7f);
         }
         else if (!boveda && vista == Vista.Boveda)
         {

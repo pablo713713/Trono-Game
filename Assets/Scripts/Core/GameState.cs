@@ -5,14 +5,21 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 #endif
 
-// GameState real: lee Assets/Data/requests.json y aplica todas las reglas del juego.
-// Historias D1-03 a D1-07: efectos, reloj, 5 días, derrotas, Duque y exigencia.
+// GameState real (versión 2): lee Assets/Data/requests.json y aplica las reglas del juego.
 //
-// Uso: poner este componente en el GameObject "GameState" en lugar de GameStateFalso
-// (nunca los dos a la vez) y arrastrar requests.json al campo "Archivo Peticiones".
-// El Desarrollador 2 no cambia nada: sigue usando Juego.Estado.
+// Reglas:
+// - Cada petición define cuánto cambia el ánimo de CADA grupo con el sí y con el no.
+//   El oro ya no cambia: las decisiones solo afectan el ánimo.
+// - Las peticiones salen al azar de todo el banco y no se repiten en una misma partida.
+// - Los días se diferencian por la cantidad de peticiones (Reglas.MensajerosPorDia) y el reloj.
+// - El ánimo se conserva de un día a otro (no hay calma al final del día).
+// - Si el reloj se acaba, la petición se aprueba sola.
+// - Si el ánimo de un grupo llega a 0, ese grupo invade el castillo y la partida termina.
+// - Tras el día 5 llega el Duque Ricardo: sí = cede la corona, no = victoria.
 //
-// Para "Jugar de nuevo": recargar la escena (SceneManager.LoadScene).
+// Uso: componente en el GameObject "GameState" (en lugar de GameStateFalso) con requests.json
+// asignado en "Archivo Peticiones". La interfaz sigue usando Juego.Estado.
+// Para "Jugar de nuevo": recargar la escena.
 //
 // Teclas de depuración (se pueden apagar en el Inspector):
 //   F9   terminar el día ahora
@@ -25,12 +32,10 @@ public class GameState : MonoBehaviour, IGameState
     [SerializeField] bool registrarEnConsola = true;
 
     int dia = 1;
-    int oro = Reglas.OroInicial;
+    readonly int oro = Reglas.OroInicial;
     readonly int[] animo = { Reglas.AnimoInicial, Reglas.AnimoInicial, Reglas.AnimoInicial };
-    readonly int[] exigencia = new int[3];
 
-    readonly List<Peticion> todas = new List<Peticion>();
-    readonly HashSet<string> usadas = new HashSet<string>();
+    readonly List<Peticion> banco = new List<Peticion>();     // peticiones que aún no salieron
     readonly Queue<Peticion> colaDelDia = new Queue<Peticion>();
 
     Peticion peticionActual;
@@ -44,7 +49,8 @@ public class GameState : MonoBehaviour, IGameState
     static readonly Peticion peticionDuque = new Peticion
     {
         id = "duque", grupo = "especial", mensajero = "duke",
-        texto = "Sobrino, cinco días cargando con este reino... Te ves cansado. " +
+        // El "|" separa las dos partes que muestra la interfaz.
+        texto = "Sobrino, cinco días cargando con este reino... Te ves cansado.|" +
                 "Déjame aliviarte la carga: dame la corona y yo me encargo de todo.",
     };
 
@@ -122,7 +128,7 @@ public class GameState : MonoBehaviour, IGameState
         }
     }
 
-    // ---------- Carga de peticiones (D1-03) ----------
+    // ---------- Carga de peticiones ----------
 
     void CargarPeticiones()
     {
@@ -158,13 +164,18 @@ public class GameState : MonoBehaviour, IGameState
             }
             if (p.si == null) p.si = new Efectos();
             if (p.no == null) p.no = new Efectos();
-            todas.Add(p);
+            banco.Add(p);
         }
 
-        Log($"{todas.Count} peticiones cargadas");
+        int necesarias = 0;
+        for (int d = 1; d <= Reglas.Dias; d++) necesarias += Reglas.MensajerosPorDia(d);
+        if (banco.Count < necesarias)
+            Debug.LogWarning($"[GameState] Hay {banco.Count} peticiones y una partida usa {necesarias}. Algunos días tendrán menos mensajeros.");
+
+        Log($"{banco.Count} peticiones cargadas");
     }
 
-    // ---------- Días (D1-05) ----------
+    // ---------- Días ----------
 
     void IniciarDia()
     {
@@ -174,42 +185,31 @@ public class GameState : MonoBehaviour, IGameState
         SiguientePeticion();
     }
 
-    // Elige las peticiones del día: primero una de cada grupo, luego relleno.
-    // Prefiere las del día actual y, si faltan, usa las de días anteriores no usadas.
+    // Saca al azar las peticiones del día del banco (sin repetir en la partida).
+    // Si alcanza, procura que venga al menos un mensajero de cada grupo.
     void PrepararPeticionesDelDia()
     {
         colaDelDia.Clear();
-        int necesarias = Reglas.MensajerosPorDia(dia);
+        int necesarias = Mathf.Min(Reglas.MensajerosPorDia(dia), banco.Count);
 
-        var disponibles = todas.FindAll(p => p.dia <= dia && !usadas.Contains(p.id));
-        Mezclar(disponibles);
-        disponibles.Sort((a, b) => (b.dia == dia).CompareTo(a.dia == dia));
-
+        Mezclar(banco);
         var elegidas = new List<Peticion>();
         foreach (Grupo g in Enum.GetValues(typeof(Grupo)))
         {
-            Peticion p = disponibles.Find(x => x.GrupoEnum == g);
+            if (elegidas.Count >= necesarias) break;
+            Peticion p = banco.Find(x => x.GrupoEnum == g);
             if (p == null) continue;
             elegidas.Add(p);
-            disponibles.Remove(p);
+            banco.Remove(p);
         }
-
-        while (elegidas.Count < necesarias && disponibles.Count > 0)
+        while (elegidas.Count < necesarias && banco.Count > 0)
         {
-            elegidas.Add(disponibles[0]);
-            disponibles.RemoveAt(0);
+            elegidas.Add(banco[0]);
+            banco.RemoveAt(0);
         }
-
-        if (elegidas.Count > necesarias) elegidas.RemoveRange(necesarias, elegidas.Count - necesarias);
-        if (elegidas.Count < necesarias)
-            Debug.LogWarning($"[GameState] Día {dia}: hay {elegidas.Count} peticiones de {necesarias}. Agreguen más a requests.json.");
 
         Mezclar(elegidas);
-        foreach (Peticion p in elegidas)
-        {
-            usadas.Add(p.id);
-            colaDelDia.Enqueue(p);
-        }
+        foreach (Peticion p in elegidas) colaDelDia.Enqueue(p);
     }
 
     void SiguientePeticion()
@@ -233,26 +233,34 @@ public class GameState : MonoBehaviour, IGameState
         tiempoRestante = 0f;
         diaCerrado = true;
 
-        for (int g = 0; g < animo.Length; g++)
-            if (animo[g] < Reglas.LimiteCalma) CambiarAnimo((Grupo)g, Reglas.CalmaFinDelDia);
-        CambiarOro(Reglas.ImpuestosFinDelDia);
-
         resumen.comentarioTobias = ComentarioDeTobias();
-        Log($"Fin del día {dia}: {resumen.sies} sí, {resumen.noes} no, {resumen.porReloj} por reloj. Oro {oro}");
-        EstadoCambio?.Invoke();
+        Log($"Fin del día {dia}: {resumen.sies} sí, {resumen.noes} no, {resumen.porReloj} por reloj | " +
+            $"ánimo M{animo[0]} S{animo[1]} I{animo[2]}");
         FinDelDia?.Invoke(resumen);
     }
 
     string ComentarioDeTobias()
     {
         if (resumen.porReloj > 0) return "El silencio también es un sí, majestad.";
-        if (oro < 30) return "Inés dice que la bóveda suena hueca, majestad.";
-        if (resumen.sies > resumen.noes * 2) return "Su padre habría hecho lo mismo... y la bóveda lo sabe.";
-        if (resumen.noes > resumen.sies * 2) return "El pueblo murmura, pero el reino sigue en pie.";
+
+        int peor = 0;
+        for (int g = 1; g < animo.Length; g++) if (animo[g] < animo[peor]) peor = g;
+        if (animo[peor] < 25)
+        {
+            switch ((Grupo)peor)
+            {
+                case Grupo.Campesinos: return "El mercado está a punto de estallar, majestad. Mire por las gradas.";
+                case Grupo.Soldados: return "Los soldados afilan algo más que sus espadas, majestad.";
+                default: return "En la catedral ya no rezan por usted, majestad.";
+            }
+        }
+
+        if (resumen.sies > resumen.noes * 2) return "Su padre habría dicho que sí a todo... y mire cómo terminó.";
+        if (resumen.noes > resumen.sies * 2) return "Muchos noes hoy, majestad. Que no se le vuelva costumbre.";
         return "Un día difícil, majestad. Mañana habrá más fila.";
     }
 
-    // ---------- Decisiones, exigencia y derrotas (D1-03, D1-04, D1-06, D1-07) ----------
+    // ---------- Decisiones y derrotas ----------
 
     void Resolver(bool si, bool porReloj)
     {
@@ -274,30 +282,12 @@ public class GameState : MonoBehaviour, IGameState
         else { resumen.noes++; total.noes++; }
 
         Efectos efectos = si ? peticion.si : peticion.no;
-        Grupo? grupo = peticion.GrupoEnum;
-
-        // Exigencia: cada sí anterior a este grupo encarece su costo en oro.
-        int cambioOro = efectos.oro;
-        if (grupo.HasValue && cambioOro < 0)
-        {
-            float multiplicador = 1f + Reglas.ExigenciaPorSi * exigencia[(int)grupo.Value];
-            cambioOro = Mathf.RoundToInt(cambioOro * multiplicador);
-        }
-
         CambiarAnimo(Grupo.Campesinos, efectos.campesinos);
         CambiarAnimo(Grupo.Soldados, efectos.soldados);
         CambiarAnimo(Grupo.Iglesia, efectos.iglesia);
-        CambiarOro(cambioOro);
-
-        if (grupo.HasValue)
-        {
-            int g = (int)grupo.Value;
-            exigencia[g] = si ? exigencia[g] + 1 : Mathf.Max(0, exigencia[g] - 1);
-        }
 
         Log($"{peticion.id}: {(porReloj ? "aprobada por el reloj" : si ? "SÍ" : "NO")} | " +
-            $"oro {cambioOro:+#;-#;0} → {oro} | ánimo C{animo[0]} S{animo[1]} I{animo[2]} | " +
-            $"exigencia C{exigencia[0]} S{exigencia[1]} I{exigencia[2]}");
+            $"ánimo M{animo[0]} S{animo[1]} I{animo[2]}");
 
         PeticionResuelta?.Invoke(si);
         EstadoCambio?.Invoke();
@@ -316,13 +306,6 @@ public class GameState : MonoBehaviour, IGameState
                 return true;
             }
         }
-
-        if (oro <= 0)
-        {
-            Terminar(Final.Bancarrota);
-            return true;
-        }
-
         return false;
     }
 
@@ -365,15 +348,6 @@ public class GameState : MonoBehaviour, IGameState
             case Grupo.Soldados: r.cambioSoldados += cambio; break;
             default: r.cambioIglesia += cambio; break;
         }
-    }
-
-    void CambiarOro(int cambio)
-    {
-        if (cambio == 0) return;
-        int antes = oro;
-        oro = Mathf.Max(0, oro + cambio);
-        resumen.cambioOro += oro - antes;
-        total.cambioOro += oro - antes;
     }
 
     static void Mezclar<T>(List<T> lista)

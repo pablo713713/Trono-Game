@@ -48,7 +48,7 @@ public class Navegador : MonoBehaviour
         if (Teclado.Presionada(Tecla.Uno)) Ir(Vista.Cultivos);
         else if (Teclado.Presionada(Tecla.Dos)) Ir(Vista.Armeria);
         else if (Teclado.Presionada(Tecla.Tres)) Ir(Vista.Catedral);
-        else if (Teclado.Presionada(Tecla.Cuatro)) Ir(Vista.Boveda);
+        // Versión 2: sin bóveda (el oro ya no cambia), la tecla 4 no hace nada.
         else if (Teclado.Presionada(Tecla.Espacio)) Ir(Vista.Trono);
     }
 }

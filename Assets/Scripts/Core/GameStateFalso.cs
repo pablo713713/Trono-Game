@@ -170,7 +170,6 @@ public class GameStateFalso : MonoBehaviour, IGameState
         CambiarAnimo(Grupo.Campesinos, efectos.campesinos);
         CambiarAnimo(Grupo.Soldados, efectos.soldados);
         CambiarAnimo(Grupo.Iglesia, efectos.iglesia);
-        CambiarOro(efectos.oro);
 
         Log($"{peticion.id}: {(porReloj ? "aprobada por el reloj" : si ? "SÍ" : "NO")}");
         PeticionResuelta?.Invoke(si);
@@ -188,10 +187,7 @@ public class GameStateFalso : MonoBehaviour, IGameState
         peticionActual = null;
         tiempoRestante = 0f;
 
-        for (int g = 0; g < animo.Length; g++)
-            if (animo[g] < Reglas.LimiteCalma) CambiarAnimo((Grupo)g, Reglas.CalmaFinDelDia);
-        CambiarOro(Reglas.ImpuestosFinDelDia);
-
+        // Versión 2: el ánimo se conserva de un día a otro y el oro no cambia.
         resumen.comentarioTobias = "Otro día más en el trono, majestad.";
         Log($"Fin del día {dia}: {resumen.sies} sí, {resumen.noes} no, {resumen.porReloj} por reloj");
         EstadoCambio?.Invoke();
