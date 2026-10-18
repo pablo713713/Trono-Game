@@ -17,13 +17,16 @@ public static class MultitudesBalcones
         public string prefab;
         public Grupo grupo;
         public string sprite;
+        // Área de la multitud en píxeles de arte (320 x 180, origen abajo a la izquierda).
+        // y = donde pisan los de adelante; profundidad = hasta dónde llegan los de atrás.
+        public float x, y, ancho, alto, profundidad;
     }
 
     static readonly Balcon[] balcones =
     {
-        new Balcon { prefab = "Panel_Balcon_Catedral", grupo = Grupo.Iglesia, sprite = "fiel_iglesia" },
-        new Balcon { prefab = "Panel_Balcon_Cultivos", grupo = Grupo.Campesinos, sprite = "campesino" },
-        new Balcon { prefab = "Panel_Balcon_Armeria", grupo = Grupo.Soldados, sprite = "soldado" },
+        new Balcon { prefab = "Panel_Balcon_Catedral", grupo = Grupo.Iglesia, sprite = "fiel_iglesia", x = 0, y = 0, ancho = 320, alto = 90, profundidad = 48 },
+        new Balcon { prefab = "Panel_Balcon_Cultivos", grupo = Grupo.Campesinos, sprite = "campesino", x = 0, y = 0, ancho = 320, alto = 90, profundidad = 48 },
+        new Balcon { prefab = "Panel_Balcon_Armeria", grupo = Grupo.Soldados, sprite = "soldado", x = 36, y = 70, ancho = 248, alto = 80, profundidad = 44 },   // sobre el pasto, entre las columnas
     };
 
     [MenuItem("Trono/Dev1/Poner multitudes en los balcones")]
@@ -74,8 +77,8 @@ public static class MultitudesBalcones
                 var r = (RectTransform)hijo;
                 r.anchorMin = r.anchorMax = Vector2.zero;
                 r.pivot = Vector2.zero;
-                r.anchoredPosition = Vector2.zero;
-                r.sizeDelta = new Vector2(320f, 90f);
+                r.anchoredPosition = new Vector2(b.x, b.y);
+                r.sizeDelta = new Vector2(b.ancho, b.alto);
 
                 Multitud m = hijo.GetComponent<Multitud>();
                 if (m == null) m = hijo.gameObject.AddComponent<Multitud>();
@@ -84,8 +87,8 @@ public static class MultitudesBalcones
                 so.FindProperty("grupo").enumValueIndex = (int)b.grupo;
                 so.FindProperty("hojaTranquilo").objectReferenceValue = hoja;
                 so.FindProperty("usarEstadoDePrueba").boolValue = false;
-                so.FindProperty("ancho").floatValue = 320f;
-                so.FindProperty("profundidad").floatValue = 48f;
+                so.FindProperty("ancho").floatValue = b.ancho;
+                so.FindProperty("profundidad").floatValue = b.profundidad;
 
                 SerializedProperty lista = so.FindProperty("cuadrosTranquilo");
                 lista.arraySize = cuadros.Length;

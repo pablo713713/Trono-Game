@@ -129,10 +129,10 @@ TextureImporter:
       name: msg_soldier_0
       rect:
         serializedVersion: 2
-        x: 11
+        x: 0
         y: 0
-        width: 42
-        height: 83
+        width: 200
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
