@@ -48,9 +48,11 @@ public static class DisposicionTrono
 
             // 4. Pergamino sobre la mesa, más ancho y bajo.
             Mover(raiz.transform, "Pergamino", 75, 2, 170, 58);
-            Mover(raiz.transform, "Pergamino/Texto", 8, 8, 154, 44);
-            Mover(raiz.transform, "Pergamino/Continuar", 8, 1, 154, 9);
-            Mover(raiz.transform, "Pergamino/SelloPuesto", 118, 8, 40, 40);
+            // El texto queda solo en la parte lisa del pergamino: los rollos ocupan
+            // ~9 % a la izquierda y ~11 % a la derecha de ui_scroll (x 14-142 de 160).
+            Mover(raiz.transform, "Pergamino/Texto", 18, 11, 130, 42);
+            Mover(raiz.transform, "Pergamino/Continuar", 18, 3, 130, 9);
+            Mover(raiz.transform, "Pergamino/SelloPuesto", 104, 9, 40, 40);
 
             // 5. Sellos sobre la mesa, a la derecha.
             Mover(raiz.transform, "SelloSi", 248, 2, 34, 34);
