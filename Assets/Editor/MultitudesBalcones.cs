@@ -105,6 +105,15 @@ public static class MultitudesBalcones
                 var textoTitulo = titulo != null ? titulo.GetComponent<UnityEngine.UI.Text>() : null;
                 if (textoTitulo != null) textoTitulo.text = Textos.TituloBalcon(b.grupo);
 
+                // Fondo de rebelión: con 80 % de enojo o más cambia a [fondo]_riot.
+                FondoRebelion fr = raiz.GetComponent<FondoRebelion>();
+                if (fr == null) fr = raiz.AddComponent<FondoRebelion>();
+                fr.grupo = b.grupo;
+                fr.fondoNormal = Textos.FondoBalcon(b.grupo);
+                fr.fondoRebelion = fr.fondoNormal + "_riot";
+                Transform fondo = raiz.transform.Find("Fondo");
+                fr.fondo = fondo != null ? fondo.GetComponent<UnityEngine.UI.Image>() : null;
+
                 PrefabUtility.SaveAsPrefabAsset(raiz, rutaPrefab);
                 hechos.Add(b.prefab + " (" + cuadros.Length + " cuadros de " + b.sprite + ")");
             }

@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArteCatalogo
   sprites:
   - {fileID: 21300000, guid: c9c17331165339a4fa31b35e410f1765, type: 3}
+  - {fileID: 21300000, guid: ac8154c1b29bdcf46b79a8e46670bc62, type: 3}
   - {fileID: 21300000, guid: 2c14b331d9dbf8e429adcbf1e45ceb9b, type: 3}
+  - {fileID: 21300000, guid: 6df27df3c927bc045adb2150cebc633b, type: 3}
   - {fileID: 21300000, guid: d05696fc97a849448be8fded4ec6c775, type: 3}
+  - {fileID: 21300000, guid: abbc78d5d5d6e144d8217f585430632a, type: 3}
   - {fileID: 21300000, guid: 389b3ccc695fbf548a64c31c83c6a735, type: 3}
   - {fileID: 21300000, guid: 293be78a061646346a7441dbf4b5145b, type: 3}
   - {fileID: -6778073820945272220, guid: 01e599e46e9cbd74ea3842356f77c25a, type: 3}
