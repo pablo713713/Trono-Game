@@ -96,6 +96,12 @@ public static class MultitudesBalcones
                     so.FindProperty("imagenAOcultar").objectReferenceValue = imagenPanel.GetComponent<UnityEngine.UI.Graphic>();
 
                 so.ApplyModifiedPropertiesWithoutUndo();
+
+                // El título del balcón se escribió al construir el prefab: actualizarlo (ej. CULTIVOS -> MERCADO).
+                Transform titulo = raiz.transform.Find("Titulo");
+                var textoTitulo = titulo != null ? titulo.GetComponent<UnityEngine.UI.Text>() : null;
+                if (textoTitulo != null) textoTitulo.text = Textos.TituloBalcon(b.grupo);
+
                 PrefabUtility.SaveAsPrefabAsset(raiz, rutaPrefab);
                 hechos.Add(b.prefab + " (" + cuadros.Length + " cuadros de " + b.sprite + ")");
             }

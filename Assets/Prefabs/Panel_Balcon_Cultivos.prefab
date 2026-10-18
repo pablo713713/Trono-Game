@@ -155,7 +155,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: CULTIVOS - Marta, la cosechera
+  m_Text: MERCADO - Marta, la cosechera
 --- !u!114 &259487799062417705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +215,7 @@ RectTransform:
   m_Children:
   - {fileID: 886244425823177344}
   - {fileID: 4510831528747145782}
+  - {fileID: 4494124620182263319}
   - {fileID: 6689822412277680053}
   - {fileID: 5422791881103978902}
   m_Father: {fileID: 0}
@@ -509,6 +510,74 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.85}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!1 &4644357839807809066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4494124620182263319}
+  - component: {fileID: 1931817044779093752}
+  m_Layer: 0
+  m_Name: MultitudSprites
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4494124620182263319
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4644357839807809066}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4163373110247584061}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 320, y: 90}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &1931817044779093752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4644357839807809066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9411637be525ee4193f0015b3d93deb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Multitud
+  grupo: 0
+  hojaTranquilo: {fileID: 2800000, guid: 01e599e46e9cbd74ea3842356f77c25a, type: 3}
+  hojaEnojado: {fileID: 0}
+  hojaFestejo: {fileID: 0}
+  cuadrosTranquilo:
+  - {fileID: -6778073820945272220, guid: 01e599e46e9cbd74ea3842356f77c25a, type: 3}
+  - {fileID: 621886893525988996, guid: 01e599e46e9cbd74ea3842356f77c25a, type: 3}
+  - {fileID: -6333441768282658722, guid: 01e599e46e9cbd74ea3842356f77c25a, type: 3}
+  - {fileID: 5467348982032180308, guid: 01e599e46e9cbd74ea3842356f77c25a, type: 3}
+  cuadrosEnojado: []
+  cuadrosFestejo: []
+  ancho: 320
+  profundidad: 48
+  maximoDePersonas: 30
+  personasPorEstado: 1e000000140000000c0000000600000002000000
+  imagenAOcultar: {fileID: 531245740174720344}
+  sortingLayer: Default
+  ordenBase: 10
+  usarEstadoDePrueba: 0
+  estadoDePrueba: 2
 --- !u!1 &6348650921731848655
 GameObject:
   m_ObjectHideFlags: 0

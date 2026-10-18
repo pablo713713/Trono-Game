@@ -266,7 +266,8 @@ public class GameState : MonoBehaviour, IGameState
     {
         Peticion peticion = peticionActual;
         peticionActual = null;
-        tiempoRestante = 0f;
+        // Ojo: TiempoRestante se deja como está hasta avisar PeticionResuelta. La interfaz lo usa
+        // para saber si la decisión la tomó el jugador (> 0) o el reloj (= 0).
 
         if (peticion.EsDuque)
         {
@@ -290,6 +291,7 @@ public class GameState : MonoBehaviour, IGameState
             $"ánimo M{animo[0]} S{animo[1]} I{animo[2]}");
 
         PeticionResuelta?.Invoke(si);
+        tiempoRestante = 0f;
         EstadoCambio?.Invoke();
 
         if (RevisarDerrota()) return;

@@ -19,6 +19,12 @@ public class PantallaFinal : MonoBehaviour
         Textos.DeFinal(final, out string t, out string m, out bool victoria);
         titulo.text = t;
         titulo.color = victoria ? new Color(1f, 0.85f, 0.35f) : new Color(0.9f, 0.3f, 0.25f);
+        // Espacio para dos líneas: entre el título (y 120) y el conteo (termina en y 90).
+        var r = mensaje.rectTransform;
+        r.anchoredPosition = new Vector2(r.anchoredPosition.x, 92f);
+        r.sizeDelta = new Vector2(r.sizeDelta.x, 27f);
+        mensaje.horizontalOverflow = HorizontalWrapMode.Wrap;
+        mensaje.verticalOverflow = VerticalWrapMode.Overflow;
         mensaje.text = m;
         conteo.text = "Dijiste SÍ " + sies + (sies == 1 ? " vez" : " veces") +
                       "\nDijiste NO " + noes + (noes == 1 ? " vez" : " veces") +
